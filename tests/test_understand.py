@@ -1,5 +1,4 @@
-from understand import understand
-
+from backend.understand import understand
 
 TEST_CASES = [
     (

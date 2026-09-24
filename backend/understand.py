@@ -4,9 +4,8 @@ import json
 from dotenv import load_dotenv
 from groq import Groq
 
-from schemas import UnderstandingResult
-from fallback import keyword_fallback
-
+from backend.schemas import UnderstandingResult
+from backend.fallback import keyword_fallback
 
 # ============================================================
 # CONFIGURATION
