@@ -1,0 +1,538 @@
+{
+  "catalog_version": "2.2.0",
+  "supported_one_ui_versions": ["5.0", "5.1", "6.0", "6.1", "7.0"],
+  "supported_devices": [
+    "Galaxy S24 Ultra",
+    "Galaxy S24+",
+    "Galaxy S24",
+    "Galaxy S23 Ultra",
+    "Galaxy S23",
+    "Galaxy Z Fold5",
+    "Galaxy Z Flip5",
+    "Galaxy A54 5G",
+    "Galaxy S21 5G"
+  ],
+  "supported_canonical_ids": [
+    "BATTERY_EXCESSIVE_DRAIN",
+    "BATTERY_NOT_CHARGING",
+    "DEVICE_OVERHEATING",
+    "DEVICE_SLOW_PERFORMANCE",
+    "WIFI_CONNECTION_PROBLEM",
+    "DISPLAY_FLICKERING"
+  ],
+  "canonical_id_aliases": {
+    "battery_drain": "BATTERY_EXCESSIVE_DRAIN",
+    "battery_not_charging": "BATTERY_NOT_CHARGING",
+    "device_overheating": "DEVICE_OVERHEATING",
+    "storage_full_lag": "DEVICE_SLOW_PERFORMANCE",
+    "device_slow_performance": "DEVICE_SLOW_PERFORMANCE",
+    "wifi_connectivity": "WIFI_CONNECTION_PROBLEM",
+    "wifi_connection_problem": "WIFI_CONNECTION_PROBLEM",
+    "display_flickering": "DISPLAY_FLICKERING"
+  },
+  "risk_order": ["low", "medium", "high", "critical"],
+  "scenarios": {
+    "BATTERY_EXCESSIVE_DRAIN": {
+      "canonical_id": "BATTERY_EXCESSIVE_DRAIN",
+      "domain": "Battery",
+      "symptom": "Excessive Battery Drain",
+      "title": "Resolve Fast Battery Drain & Optimize Power Usage",
+      "summary": "Step-by-step diagnostic and remediation plan to isolate battery-draining apps, enable power saving, and calibrate charging limits.",
+      "steps": [
+        {
+          "step_id": "step_bat_01",
+          "action": "check_battery_usage",
+          "title": "Inspect Battery Usage & Top Draining Apps",
+          "description": "View detailed per-app battery breakdown over the last 24 hours to identify background drain anomalies.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Battery usage",
+          "deeplink": "intent:#Intent;action=android.intent.action.POWER_USAGE_SUMMARY;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Device Care > Battery > Usage since last full charge",
+              "deeplink": "intent:#Intent;action=android.intent.action.MAIN;component=com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity;end"
+            },
+            "5.1": {
+              "target_screen": "Settings > Device Care > Battery > Usage since last full charge",
+              "deeplink": "intent:#Intent;action=android.intent.action.MAIN;component=com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity;end"
+            },
+            "6.0": {
+              "target_screen": "Settings > Battery > Battery usage",
+              "deeplink": "intent:#Intent;action=android.intent.action.POWER_USAGE_SUMMARY;package=com.android.settings;end"
+            },
+            "6.1": {
+              "target_screen": "Settings > Battery > Battery usage",
+              "deeplink": "intent:#Intent;action=android.intent.action.POWER_USAGE_SUMMARY;package=com.android.settings;end"
+            },
+            "7.0": {
+              "target_screen": "Settings > Battery & Energy > Detailed Usage Analytics",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_INFO;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_bat_02",
+          "action": "enable_power_saving",
+          "title": "Enable Power Saving Mode",
+          "description": "Restricts CPU speed to 70%, limits background network usage, and decreases display brightness to conserve power.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Power saving",
+          "deeplink": "intent:#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Device Care > Battery > Power saving",
+              "deeplink": "intent:#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;package=com.android.settings;end"
+            },
+            "7.0": {
+              "target_screen": "Settings > Battery > Adaptive Power Saving",
+              "deeplink": "intent:#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_bat_03",
+          "action": "limit_background_apps",
+          "title": "Put Unused Apps into Deep Sleep",
+          "description": "Prevents rarely-used applications from running in the background, receiving notifications, or draining battery.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Background usage limits",
+          "deeplink": "intent:#Intent;action=com.samsung.android.sm.ACTION_RESTRICTED_APP_LIST;component=com.samsung.android.lool/com.samsung.android.sm.battery.ui.setting.RestrictedAppActivity;end",
+          "version_overrides": {
+            "7.0": {
+              "target_screen": "Settings > Battery > Background App Manager",
+              "deeplink": "intent:#Intent;action=com.samsung.android.sm.ACTION_RESTRICTED_APP_LIST;component=com.samsung.android.lool/com.samsung.android.sm.battery.ui.setting.RestrictedAppActivity;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_bat_04",
+          "action": "enable_battery_protection",
+          "title": "Configure Battery Protection",
+          "description": "Limits maximum charge level (80% or Adaptive) to prolong battery health lifespan.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Battery protection",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_PROTECT;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Device Care > Battery > More battery settings > Protect battery (85%)",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_PROTECT;package=com.android.settings;end"
+            },
+            "6.1": {
+              "target_screen": "Settings > Battery > Battery protection (Basic, Adaptive, Maximum 80%)",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_PROTECT;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_bat_05",
+          "action": "clear_google_play_services_cache",
+          "title": "Clear Google Play Services Cache",
+          "description": "Resolves background sync loops that keep the CPU awake (wakelock battery drain).",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Settings > Apps > Google Play services > Storage > Clear cache",
+          "deeplink": "intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.google.android.gms;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_bat_06",
+          "action": "reset_all_settings",
+          "title": "Reset All System Settings",
+          "description": "Resets system preferences (Wi-Fi, display, sounds, permissions) without erasing personal files or accounts.",
+          "risk_level": "high",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Settings > General Management > Reset > Reset all settings",
+          "deeplink": "intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.Settings$ResetDashboardActivity;end"
+        },
+        {
+          "step_id": "step_bat_07",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset (Last Resort)",
+          "description": "Completely erases all user data, photos, accounts, and downloaded apps to restore device to factory state.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    },
+    "BATTERY_NOT_CHARGING": {
+      "canonical_id": "BATTERY_NOT_CHARGING",
+      "domain": "Battery",
+      "symptom": "Battery Not Charging",
+      "title": "Troubleshoot Charging Failures & Power Input Issues",
+      "summary": "Inspects charging port anomalies, toggles fast charging controllers, clears moisture lockouts, and performs power resets.",
+      "steps": [
+        {
+          "step_id": "step_chg_01",
+          "action": "check_charging_port_and_cable",
+          "title": "Inspect USB-C Port & Cable Connection",
+          "description": "Verify charging cable firmly clicks into port. Check for lint, debris, or moisture detection warnings in notification panel.",
+          "risk_level": "low",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Hardware Inspection / Notification Panel (Moisture Warning)",
+          "deeplink": "intent:#Intent;action=android.settings.SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_chg_02",
+          "action": "toggle_fast_charging",
+          "title": "Toggle Fast Charging & Super Fast Charging",
+          "description": "Re-initiates USB Power Delivery (PD) handshake by cycling fast charging toggles in Battery settings.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Charging settings > Fast charging",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_CHARGING_SETTINGS;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Device Care > Battery > More battery settings > Fast charging",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_CHARGING_SETTINGS;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_chg_03",
+          "action": "disable_wireless_power_sharing",
+          "title": "Verify Wireless Power Sharing Is Off",
+          "description": "Ensures phone is not attempting reverse wireless power transfer, which blocks external charging.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Wireless power sharing",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.WIRELESS_POWER_SHARING;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_chg_04",
+          "action": "clear_usbsystem_cache",
+          "title": "Clear USBSettings System App Cache",
+          "description": "Flushes temporary USB controller cache that can trigger false 'Moisture detected in USB port' alerts.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Settings > Apps > Filter: Show system apps > USBSettings > Storage > Clear cache",
+          "deeplink": "intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.sec.usb.settings;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_chg_05",
+          "action": "simulated_battery_pull",
+          "title": "Perform Hardware Force Restart",
+          "description": "Press and hold Volume Down + Side (Power) button for 10-15 seconds until Samsung logo appears to reset power IC controller.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Hardware Keys: Volume Down + Power Button (10s)",
+          "deeplink": "intent:#Intent;action=android.settings.SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_chg_06",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset (Rule Out System Crash)",
+          "description": "Restores base Android power management firmware if software lockup is preventing battery charge.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    },
+    "DEVICE_OVERHEATING": {
+      "canonical_id": "DEVICE_OVERHEATING",
+      "domain": "Battery",
+      "symptom": "Device Overheating",
+      "title": "Cool Down Device & Mitigate Overheating",
+      "summary": "Calibrates thermal dissipation, limits processor peak speeds, and prevents intensive background execution.",
+      "steps": [
+        {
+          "step_id": "step_thm_01",
+          "action": "close_recent_background_apps",
+          "title": "Close Resource-Intensive Apps & Optimize Device",
+          "description": "Triggers Samsung Device Care memory purge to stop runaway processes consuming CPU cores.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Optimize now",
+          "deeplink": "intent:#Intent;action=com.samsung.android.sm.ACTION_DEVICE_CARE;component=com.samsung.android.lool/com.samsung.android.sm.ui.DeviceCareActivity;end"
+        },
+        {
+          "step_id": "step_thm_02",
+          "action": "adjust_processing_speed",
+          "title": "Set Processing Speed to Optimized or Light Mode",
+          "description": "Prioritizes battery life and cooling over peak clock speeds. Light mode significantly reduces heat generation.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Performance profile / Processing speed",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.PROCESSING_SPEED;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Device Care > Processing speed (Optimized / High / Maximum)",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.PROCESSING_SPEED;package=com.android.settings;end"
+            },
+            "6.0": {
+              "target_screen": "Settings > Device Care > Performance profile (Standard / Light)",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.PERFORMANCE_PROFILE;package=com.android.settings;end"
+            },
+            "6.1": {
+              "target_screen": "Settings > Device Care > Performance profile (Standard / Light)",
+              "deeplink": "intent:#Intent;action=com.samsung.android.settings.PERFORMANCE_PROFILE;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_thm_03",
+          "action": "disable_fast_charging_temporarily",
+          "title": "Turn Off Fast Charging While Device Is Hot",
+          "description": "Reduces thermal load on the battery cell by lowering charging wattage until temperature normalizes.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Battery > Charging settings > Fast charging",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.BATTERY_CHARGING_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_thm_04",
+          "action": "reboot_into_safe_mode",
+          "title": "Boot Device into Safe Mode",
+          "description": "Restarts device with 3rd-party apps disabled to diagnose whether an installed app causes thermal overload.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Hardware Button Sequence / Power Menu > Hold Power Off > Tap Safe Mode",
+          "deeplink": "intent:#Intent;action=android.settings.SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_thm_05",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset",
+          "description": "Erases device storage to eliminate corrupt system state or persistent thermal runaway daemons.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    },
+    "DEVICE_SLOW_PERFORMANCE": {
+      "canonical_id": "DEVICE_SLOW_PERFORMANCE",
+      "domain": "Performance",
+      "symptom": "Device Slow Performance",
+      "title": "Free Up Storage Space & Eliminate Performance Stutter",
+      "summary": "Identifies large duplicate files, clears cached application artifacts, and configures RAM Plus virtual memory.",
+      "steps": [
+        {
+          "step_id": "step_str_01",
+          "action": "optimize_device_care",
+          "title": "Run Device Care Quick Optimization",
+          "description": "Closes background apps, clears unused memory, and checks for malware in one tap.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Optimize now",
+          "deeplink": "intent:#Intent;action=com.samsung.android.sm.ACTION_DEVICE_CARE;component=com.samsung.android.lool/com.samsung.android.sm.ui.DeviceCareActivity;end"
+        },
+        {
+          "step_id": "step_str_02",
+          "action": "inspect_storage_breakdown",
+          "title": "Check Storage Space & Large Files Breakdown",
+          "description": "Inspect internal storage usage by category (images, videos, installation files, system cache).",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Storage",
+          "deeplink": "intent:#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_str_03",
+          "action": "empty_recycle_bin",
+          "title": "Empty Samsung Gallery & My Files Trash Bin",
+          "description": "Permanently clears items in the 30-day recycle bin to reclaim immediate gigabytes of flash storage.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Storage > Recycle bin",
+          "deeplink": "intent:#Intent;action=com.sec.android.app.myfiles.VIEW_TRASH;package=com.sec.android.app.myfiles;end"
+        },
+        {
+          "step_id": "step_str_04",
+          "action": "configure_ram_plus",
+          "title": "Adjust RAM Plus (Virtual Memory)",
+          "description": "Allocates 2GB, 4GB, 6GB, or 8GB of internal storage as virtual memory to maintain smooth app multitasking.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Device Care > Memory > RAM Plus",
+          "deeplink": "intent:#Intent;action=com.samsung.android.sm.ACTION_RAM_PLUS;component=com.samsung.android.lool/com.samsung.android.sm.ram.ui.RamPlusActivity;end"
+        },
+        {
+          "step_id": "step_str_05",
+          "action": "clear_cached_data_all_apps",
+          "title": "Clear App System Cache via Device Care",
+          "description": "Cleans temporary data files from heavily-cached social media and browser applications.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Settings > Apps > Filter by size > Clear Cache",
+          "deeplink": "intent:#Intent;action=android.settings.MANAGE_APPLICATIONS_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_str_06",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset",
+          "description": "Completely restores device storage when system partitions are irrecoverably full.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    },
+    "WIFI_CONNECTION_PROBLEM": {
+      "canonical_id": "WIFI_CONNECTION_PROBLEM",
+      "domain": "Connectivity",
+      "symptom": "Wi-Fi Connection Problem",
+      "title": "Diagnose Wi-Fi Disconnections & Network Faults",
+      "summary": "Restarts network adapters, isolates Intelligent Wi-Fi switching, and refreshes network stack configuration.",
+      "steps": [
+        {
+          "step_id": "step_net_01",
+          "action": "toggle_wifi_connection",
+          "title": "Toggle Wi-Fi Connection & Reconnect",
+          "description": "Disconnects from the active AP, clears cached DHCP leases, and initiates clean 802.11 handshake.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Connections > Wi-Fi",
+          "deeplink": "intent:#Intent;action=android.settings.WIFI_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_net_02",
+          "action": "configure_intelligent_wifi",
+          "title": "Configure Intelligent Wi-Fi Settings",
+          "description": "Disables aggressive 'Switch to mobile data' when Wi-Fi signal fluctuates temporarily.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Connections > Wi-Fi > Intelligent Wi-Fi",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.INTELLIGENT_WIFI;package=com.android.settings;end",
+          "version_overrides": {
+            "5.0": {
+              "target_screen": "Settings > Connections > Wi-Fi > Advanced > Switch to mobile data",
+              "deeplink": "intent:#Intent;action=android.settings.WIFI_SETTINGS;package=com.android.settings;end"
+            }
+          }
+        },
+        {
+          "step_id": "step_net_03",
+          "action": "reset_network_settings",
+          "title": "Reset Network Settings",
+          "description": "Flushes all saved Wi-Fi networks, Bluetooth pairings, and APN cellular configs back to standard defaults.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Settings > General Management > Reset > Reset network settings",
+          "deeplink": "intent:#Intent;action=android.settings.RESET_NETWORK_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_net_04",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset",
+          "description": "Reinstalls pristine radio firmware profiles if persistent subsystem crash occurs.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    },
+    "DISPLAY_FLICKERING": {
+      "canonical_id": "DISPLAY_FLICKERING",
+      "domain": "Display",
+      "symptom": "Screen Flickering",
+      "title": "Resolve Screen Flickering & Display Glitches",
+      "summary": "Calibrates Dynamic AMOLED refresh rate, disables conflicting ambient brightness sensors, and runs hardware diagnostics.",
+      "steps": [
+        {
+          "step_id": "step_dsp_01",
+          "action": "set_motion_smoothness_standard",
+          "title": "Switch Motion Smoothness to Standard (60Hz)",
+          "description": "Locks refresh rate to 60Hz. Variable 1Hz-120Hz LTPO display switching often causes rapid micro-flickering at low brightness.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Display > Motion smoothness",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.REFRESH_RATE_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_dsp_02",
+          "action": "toggle_adaptive_brightness",
+          "title": "Turn Off Adaptive Brightness",
+          "description": "Disables light sensor polling loops that rapidly fluctuate screen backlighting under indoor LED light.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Display > Adaptive brightness",
+          "deeplink": "intent:#Intent;action=android.settings.DISPLAY_SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_dsp_03",
+          "action": "disable_eye_comfort_shield",
+          "title": "Turn Off Eye Comfort Shield",
+          "description": "Removes dynamic amber color tinting temperature shifts that can appear as screen blinking.",
+          "risk_level": "low",
+          "fix_for_me": true,
+          "is_destructive": false,
+          "target_screen": "Settings > Display > Eye comfort shield",
+          "deeplink": "intent:#Intent;action=com.samsung.android.settings.BLUE_LIGHT_FILTER;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_dsp_04",
+          "action": "run_samsung_display_diagnostics",
+          "title": "Run Samsung Members Display Diagnostic",
+          "description": "Tests Red, Green, and Blue OLED sub-pixels and touch sensor array to detect hardware line defects.",
+          "risk_level": "low",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Samsung Members > Support > Phone diagnostics > Screen test",
+          "deeplink": "intent:#Intent;action=com.samsung.android.voc.action.DIAGNOSTICS;package=com.samsung.android.voc;end"
+        },
+        {
+          "step_id": "step_dsp_05",
+          "action": "reboot_into_safe_mode",
+          "title": "Boot Device into Safe Mode",
+          "description": "Isolates screen overlay apps (blue light filter, screen recorder, launcher) that conflict with One UI compositor.",
+          "risk_level": "medium",
+          "fix_for_me": false,
+          "is_destructive": false,
+          "target_screen": "Hardware Keys: Power Menu > Long-press Power off > Safe mode",
+          "deeplink": "intent:#Intent;action=android.settings.SETTINGS;package=com.android.settings;end"
+        },
+        {
+          "step_id": "step_dsp_06",
+          "action": "factory_data_reset",
+          "title": "Factory Data Reset",
+          "description": "Full system reset to isolate software graphics driver corruption from physical screen panel failure.",
+          "risk_level": "critical",
+          "fix_for_me": false,
+          "is_destructive": true,
+          "target_screen": "Settings > General Management > Reset > Factory data reset",
+          "deeplink": "intent:#Intent;action=android.settings.MASTER_CLEAR;package=com.android.settings;end"
+        }
+      ]
+    }
+  }
+}
