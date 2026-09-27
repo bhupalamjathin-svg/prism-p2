@@ -3,7 +3,7 @@ from typing import Dict, Any, Optional, List, Union
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
-from core.models import (
+from backend.core.models import (
     P2UnderstandingPayload,
     TroubleshootingPlanResponse,
     ClarificationResponse,
@@ -12,10 +12,10 @@ from core.models import (
     FixExecutionResponse,
     DeviceInfo
 )
-from core.planner import CatalogPlanner
-from core.validator import PlanValidator
-from core.cache import FastPathCache
-from core.neural_bridge import p2_keyword_understand
+from backend.core.planner import CatalogPlanner
+from backend.core.validator import PlanValidator
+from backend.core.cache import FastPathCache
+from backend.core.neural_bridge import p2_understand
 
 router = APIRouter()
 
@@ -71,7 +71,7 @@ async def troubleshoot(request: FlexibleTroubleshootRequest):
 
     # 2. If no canonical_id supplied but complaint exists, use P2 understanding bridge
     if not canonical_id and request.complaint:
-        p2_result = p2_keyword_understand(request.complaint, request.device_info.model_dump())
+        p2_result = p2_understand(request.complaint, request.device_info.model_dump())
         if p2_result.get("status") == "need_clarification":
             return ClarificationResponse(
                 status="need_clarification",

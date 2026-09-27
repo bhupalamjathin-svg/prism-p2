@@ -1,8 +1,9 @@
-import os
-import re
 from typing import Dict, Any, Optional
 
-# Match P2's exact keyword rules from prism-p2
+from backend.understand import understand
+
+
+# P2's deterministic fallback rules
 FALLBACK_RULES = [
     {
         "keywords": [
@@ -60,7 +61,7 @@ FALLBACK_RULES = [
             "performance slow",
             "storage full",
             "stutter",
-            "freezing"
+            "freezing",
         ],
         "domain": "Performance",
         "symptom": "Device Slow Performance",
@@ -101,11 +102,17 @@ FALLBACK_RULES = [
     },
 ]
 
-def p2_keyword_understand(complaint: str, device_info: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+
+def p2_keyword_understand(
+    complaint: str,
+    device_info: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     """
-    P2's exact deterministic understanding and confidence logic.
-    Identifies single issues, vague inputs, and multiple problem conflicts.
+    Deterministic P2 fallback.
+
+    Used when the real P2 LLM cannot be reached.
     """
+
     text = complaint.lower().strip() if complaint else ""
 
     if not text:
@@ -117,15 +124,24 @@ def p2_keyword_understand(complaint: str, device_info: Optional[Dict[str, Any]] 
             "confidence": 0.0,
             "clarification_needed": True,
             "question": "Please describe the problem with your phone.",
-            "options": ["Battery", "Performance", "Connectivity", "Display", "Other"]
+            "options": [
+                "Battery",
+                "Performance",
+                "Connectivity",
+                "Display",
+                "Other",
+            ],
         }
 
     matches = []
+
     for rule in FALLBACK_RULES:
         score = 0
+
         for keyword in rule["keywords"]:
             if keyword in text:
                 score += 1
+
         if score > 0:
             matches.append((score, rule))
 
@@ -143,15 +159,21 @@ def p2_keyword_understand(complaint: str, device_info: Optional[Dict[str, Any]] 
                 "Performance",
                 "Connectivity",
                 "Display",
-                "Other"
-            ]
+                "Other",
+            ],
         }
 
     matches.sort(key=lambda x: x[0], reverse=True)
+
     best_score, best_rule = matches[0]
 
-    # Multiple distinct problems detected with equal weight (e.g. phone hot and battery dies fast)
-    if len(matches) > 1 and matches[0][0] == matches[1][0] and matches[0][1]["canonical_id"] != matches[1][1]["canonical_id"]:
+    # Multiple distinct problems detected.
+    if (
+        len(matches) > 1
+        and matches[0][0] == matches[1][0]
+        and matches[0][1]["canonical_id"]
+        != matches[1][1]["canonical_id"]
+    ):
         return {
             "status": "need_clarification",
             "domain": None,
@@ -163,8 +185,8 @@ def p2_keyword_understand(complaint: str, device_info: Optional[Dict[str, Any]] 
             "options": [
                 matches[0][1]["symptom"],
                 matches[1][1]["symptom"],
-                "Both"
-            ]
+                "Both",
+            ],
         }
 
     return {
@@ -175,5 +197,37 @@ def p2_keyword_understand(complaint: str, device_info: Optional[Dict[str, Any]] 
         "confidence": best_rule["confidence"],
         "clarification_needed": False,
         "question": None,
-        "options": []
+        "options": [],
     }
+
+
+def p2_understand(
+    complaint: str,
+    device_info: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """
+    Main P2 bridge.
+
+    Primary:
+        Real P2 GPT-OSS neural understanding.
+
+    Fallback:
+        Deterministic keyword understanding if the LLM/API fails.
+    """
+
+    try:
+        result = understand(
+            complaint=complaint,
+            device_info=device_info,
+        )
+
+        # understand() already validates the P2 contract.
+        return result
+
+    except Exception as e:
+        print(f"[P2] LLM unavailable, using keyword fallback: {e}")
+
+        return p2_keyword_understand(
+            complaint=complaint,
+            device_info=device_info,
+        )
