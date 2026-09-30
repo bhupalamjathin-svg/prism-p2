@@ -1,5 +1,12 @@
 # 🧠 Samsung PRISM
 
+
+## Demo Video
+
+[Watch the Samsung PRISM Demo Video](https://drive.google.com/file/d/1Fycq6SgYgQpwuYQLcsMfIaL8aThC7XMw/view?usp=sharing)
+
+
+
 ### Smart Guided Troubleshooting Engine
 
 > Turning vague device complaints into safe, personalized, step-by-step troubleshooting actions.
